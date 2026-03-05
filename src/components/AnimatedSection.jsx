@@ -1,43 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 
 function AnimatedSection({ children, className = '', delay = 0 }) {
     const ref = useRef(null)
-    const [isVisible, setIsVisible] = useState(false)
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        setIsVisible(true)
-                    }, delay)
-                    observer.unobserve(entry.target)
-                }
-            },
-            {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px',
-            }
-        )
-
-        if (ref.current) {
-            observer.observe(ref.current)
-        }
-
-        return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current)
-            }
-        }
-    }, [delay])
+    const isInView = useInView(ref, { once: true, margin: "-50px 0px" })
 
     return (
-        <div
+        <motion.div
             ref={ref}
-            className={`animate-on-scroll ${isVisible ? 'visible' : ''} ${className}`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: delay / 1000 }}
+            className={className}
         >
             {children}
-        </div>
+        </motion.div>
     )
 }
 

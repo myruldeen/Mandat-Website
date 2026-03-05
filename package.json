@@ -4,15 +4,18 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "node scripts/process-blog.cjs && vite",
+    "build": "node scripts/process-blog.cjs && vite build",
+    "preview": "vite preview",
+    "process-blog": "node scripts/process-blog.cjs"
   },
   "dependencies": {
+    "framer-motion": "^12.35.0",
+    "lucide-react": "^0.312.0",
+    "mammoth": "^1.11.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.22.0",
-    "lucide-react": "^0.312.0"
+    "react-router-dom": "^6.22.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",
