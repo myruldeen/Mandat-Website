@@ -12,13 +12,19 @@ if (!fs.existsSync(outputDir)) {
 }
 
 async function processDocs() {
+    console.log(`Searching for blog documents in: ${blogsDir}`);
     if (!fs.existsSync(blogsDir)) {
-        console.error(`Blog directory not found at ${blogsDir}`);
-        return;
+        console.error(`ERROR: Blog directory not found at ${blogsDir}`);
+        process.exit(1); // Fail the build explicitly
     }
 
     const files = fs.readdirSync(blogsDir).filter(file => file.endsWith('.docx'));
+    console.log(`Found ${files.length} .docx files.`);
     const posts = [];
+
+    if (files.length === 0) {
+        console.warn('WARNING: No .docx files found in the Blog directory.');
+    }
 
     for (const file of files) {
         const filePath = path.join(blogsDir, file);
