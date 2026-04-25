@@ -10,6 +10,7 @@ import {
     ArrowUpDown,
     Filter,
 } from 'lucide-react'
+import { useForm, ValidationError } from '@formspree/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import AnimatedSection from '../components/AnimatedSection'
 import ParticleField from '../components/ParticleField'
@@ -17,40 +18,13 @@ import TechGrid from '../components/TechGrid'
 import blogPosts from '../data/blog-posts.json'
 
 function Blog({ openModal }) {
+    const [state, handleSubmit] = useForm('xaqakqby')
     const [email, setEmail] = useState('')
-    const [isSubscribed, setIsSubscribed] = useState(false)
     const [activeCategory, setActiveCategory] = useState('All')
     const [sortBy, setSortBy] = useState('newest')
 
     const categories = ['All', ...new Set(blogPosts.map((post) => post.tag))]
 
-    const handleSubscribe = async (e) => {
-        e.preventDefault()
-
-        try {
-            await fetch('https://formspree.io/f/info@mandatanalytic.com', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    _subject: "New Newsletter Subscription",
-                    _message: `New subscription request from intelligence hub: ${email}`
-                })
-            })
-            setIsSubscribed(true)
-            setEmail('')
-            setTimeout(() => setIsSubscribed(false), 3000)
-        } catch (error) {
-            console.error('Subscription error:', error)
-            // Still show success UI to user for better UX, or could show error
-            setIsSubscribed(true)
-            setEmail('')
-            setTimeout(() => setIsSubscribed(false), 3000)
-        }
-    }
 
     const filteredPosts = blogPosts
         .filter((post) => activeCategory === 'All' || post.tag === activeCategory)
