@@ -7,8 +7,10 @@ import {
     Send,
     BookOpen,
     Sparkles,
+    ArrowUpDown,
+    Filter,
 } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import AnimatedSection from '../components/AnimatedSection'
 import ParticleField from '../components/ParticleField'
 import TechGrid from '../components/TechGrid'
@@ -17,6 +19,10 @@ import blogPosts from '../data/blog-posts.json'
 function Blog({ openModal }) {
     const [email, setEmail] = useState('')
     const [isSubscribed, setIsSubscribed] = useState(false)
+    const [activeCategory, setActiveCategory] = useState('All')
+    const [sortBy, setSortBy] = useState('newest')
+
+    const categories = ['All', ...new Set(blogPosts.map((post) => post.tag))]
 
     const handleSubscribe = (e) => {
         e.preventDefault()
@@ -24,6 +30,13 @@ function Blog({ openModal }) {
         setEmail('')
         setTimeout(() => setIsSubscribed(false), 3000)
     }
+
+    const filteredPosts = blogPosts
+        .filter((post) => activeCategory === 'All' || post.tag === activeCategory)
+        .sort((a, b) => {
+            if (sortBy === 'newest') return b.timestamp - a.timestamp
+            return a.timestamp - b.timestamp
+        })
 
     return (
         <div className="pt-20 bg-slate-950 overflow-hidden">
@@ -60,44 +73,106 @@ function Blog({ openModal }) {
             </section>
 
             {/* ═══════════════════════════════════════
+                 FILTERS & SEARCH
+            ═══════════════════════════════════════ */}
+            <section className="pb-8 relative">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 py-8 border-y border-white/5">
+                        {/* Categories */}
+                        <div className="flex flex-wrap items-center gap-3">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat}
+                                    onClick={() => setActiveCategory(cat)}
+                                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${activeCategory === cat
+                                            ? 'bg-primary-500 border-primary-500 text-white shadow-lg shadow-primary-500/20'
+                                            : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-white'
+                                        }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Sort */}
+                        <div className="flex items-center gap-4">
+                            <span className="text-slate-500 text-sm flex items-center gap-2">
+                                <ArrowUpDown className="w-4 h-4" />
+                                Sort:
+                            </span>
+                            <div className="flex bg-white/5 border border-white/10 p-1 rounded-xl">
+                                <button
+                                    onClick={() => setSortBy('newest')}
+                                    className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${sortBy === 'newest'
+                                            ? 'bg-primary-500/20 text-primary-400'
+                                            : 'text-slate-500 hover:text-slate-300'
+                                        }`}
+                                >
+                                    Newest
+                                </button>
+                                <button
+                                    onClick={() => setSortBy('oldest')}
+                                    className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${sortBy === 'oldest'
+                                            ? 'bg-primary-500/20 text-primary-400'
+                                            : 'text-slate-500 hover:text-slate-300'
+                                        }`}
+                                >
+                                    Oldest
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
                  ARTICLES GRID
             ═══════════════════════════════════════ */}
             <section className="py-16 relative">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {blogPosts.map((article, index) => (
-                            <AnimatedSection key={article.slug} delay={index * 100}>
-                                <Link to={`/blog/${article.slug}`} className="block h-full">
-                                    <motion.article
-                                        className="h-full group glass-panel rounded-3xl border border-white/10 overflow-hidden flex flex-col transition-all duration-300 p-8 relative"
-                                        whileHover={{ y: -6, borderColor: 'rgba(20, 184, 166, 0.4)' }}
-                                    >
-                                        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <AnimatePresence mode="popLayout">
+                            {filteredPosts.map((article, index) => (
+                                <motion.div
+                                    key={article.slug}
+                                    layout
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                                >
+                                    <Link to={`/blog/${article.slug}`} className="block h-full">
+                                        <motion.article
+                                            className="h-full group glass-panel rounded-3xl border border-white/10 overflow-hidden flex flex-col transition-all duration-300 p-8 relative"
+                                            whileHover={{ y: -6, borderColor: 'rgba(20, 184, 166, 0.4)' }}
+                                        >
+                                            <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                        <div className="relative z-10 flex-grow flex flex-col">
-                                            <div className="flex items-center justify-between mb-8">
-                                                <span className="bg-primary-500/10 text-primary-400 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-md font-display border border-primary-500/20">
-                                                    {article.tag}
-                                                </span>
-                                                <div className="flex items-center text-xs text-slate-400 font-light">
-                                                    <Clock className="w-3.5 h-3.5 mr-1.5" />
-                                                    {article.date}
+                                            <div className="relative z-10 flex-grow flex flex-col">
+                                                <div className="flex items-center justify-between mb-8">
+                                                    <span className="bg-primary-500/10 text-primary-400 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-md font-display border border-primary-500/20">
+                                                        {article.tag}
+                                                    </span>
+                                                    <div className="flex items-center text-xs text-slate-400 font-light">
+                                                        <Clock className="w-3.5 h-3.5 mr-1.5" />
+                                                        {article.date}
+                                                    </div>
+                                                </div>
+
+                                                <h2 className="text-2xl font-bold text-white mb-8 group-hover:text-primary-400 transition-colors duration-300 font-display leading-snug">
+                                                    {article.title}
+                                                </h2>
+
+                                                <div className="mt-auto flex items-center text-primary-400 text-sm font-medium font-display group-hover:text-primary-300 transition-colors pt-6 border-t border-white/5">
+                                                    Read Article
+                                                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
                                                 </div>
                                             </div>
-
-                                            <h2 className="text-2xl font-bold text-white mb-8 group-hover:text-primary-400 transition-colors duration-300 font-display leading-snug">
-                                                {article.title}
-                                            </h2>
-
-                                            <div className="mt-auto flex items-center text-primary-400 text-sm font-medium font-display group-hover:text-primary-300 transition-colors pt-6 border-t border-white/5">
-                                                Read Article
-                                                <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
-                                            </div>
-                                        </div>
-                                    </motion.article>
-                                </Link>
-                            </AnimatedSection>
-                        ))}
+                                        </motion.article>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
                 </div>
             </section>
