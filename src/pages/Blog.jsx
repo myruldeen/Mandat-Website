@@ -24,11 +24,32 @@ function Blog({ openModal }) {
 
     const categories = ['All', ...new Set(blogPosts.map((post) => post.tag))]
 
-    const handleSubscribe = (e) => {
+    const handleSubscribe = async (e) => {
         e.preventDefault()
-        setIsSubscribed(true)
-        setEmail('')
-        setTimeout(() => setIsSubscribed(false), 3000)
+
+        try {
+            await fetch('https://formspree.io/f/info@mandatanalytic.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    _subject: "New Newsletter Subscription",
+                    _message: `New subscription request from intelligence hub: ${email}`
+                })
+            })
+            setIsSubscribed(true)
+            setEmail('')
+            setTimeout(() => setIsSubscribed(false), 3000)
+        } catch (error) {
+            console.error('Subscription error:', error)
+            // Still show success UI to user for better UX, or could show error
+            setIsSubscribed(true)
+            setEmail('')
+            setTimeout(() => setIsSubscribed(false), 3000)
+        }
     }
 
     const filteredPosts = blogPosts
@@ -85,8 +106,8 @@ function Blog({ openModal }) {
                                     key={cat}
                                     onClick={() => setActiveCategory(cat)}
                                     className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${activeCategory === cat
-                                            ? 'bg-primary-500 border-primary-500 text-white shadow-lg shadow-primary-500/20'
-                                            : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-white'
+                                        ? 'bg-primary-500 border-primary-500 text-white shadow-lg shadow-primary-500/20'
+                                        : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-white'
                                         }`}
                                 >
                                     {cat}
@@ -104,8 +125,8 @@ function Blog({ openModal }) {
                                 <button
                                     onClick={() => setSortBy('newest')}
                                     className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${sortBy === 'newest'
-                                            ? 'bg-primary-500/20 text-primary-400'
-                                            : 'text-slate-500 hover:text-slate-300'
+                                        ? 'bg-primary-500/20 text-primary-400'
+                                        : 'text-slate-500 hover:text-slate-300'
                                         }`}
                                 >
                                     Newest
@@ -113,8 +134,8 @@ function Blog({ openModal }) {
                                 <button
                                     onClick={() => setSortBy('oldest')}
                                     className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${sortBy === 'oldest'
-                                            ? 'bg-primary-500/20 text-primary-400'
-                                            : 'text-slate-500 hover:text-slate-300'
+                                        ? 'bg-primary-500/20 text-primary-400'
+                                        : 'text-slate-500 hover:text-slate-300'
                                         }`}
                                 >
                                     Oldest

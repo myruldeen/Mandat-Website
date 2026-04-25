@@ -23,26 +23,49 @@ function BookDemoModal({ isOpen, onClose }) {
         e.preventDefault()
         setIsSubmitting(true)
 
-        // Simulate form submission
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-
-        setIsSubmitting(false)
-        setIsSubmitted(true)
-
-        // Reset after showing success
-        setTimeout(() => {
-            setIsSubmitted(false)
-            setFormData({
-                fullName: '',
-                email: '',
-                organization: '',
-                phone: '',
-                orgType: '',
-                message: '',
-                preferredContact: 'email',
+        try {
+            const response = await fetch('https://formspree.io/f/info@mandatanalytic.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...formData,
+                    _subject: `New Demo Request from ${formData.organization}`
+                })
             })
-            onClose()
-        }, 3000)
+
+            if (response.ok) {
+                setIsSubmitted(true)
+                // Reset after showing success
+                setTimeout(() => {
+                    setIsSubmitted(false)
+                    setFormData({
+                        fullName: '',
+                        email: '',
+                        organization: '',
+                        phone: '',
+                        orgType: '',
+                        message: '',
+                        preferredContact: 'email',
+                    })
+                    onClose()
+                }, 3000)
+            } else {
+                const data = await response.json()
+                if (data.errors) {
+                    throw new Error(data.errors.map(error => error.message).join(', '))
+                } else {
+                    throw new Error('Form submission failed')
+                }
+            }
+        } catch (error) {
+            console.error('Submission error:', error)
+            alert('Something went wrong. Please try again or email us directly at info@mandatanalytic.com')
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     if (!isOpen) return null
