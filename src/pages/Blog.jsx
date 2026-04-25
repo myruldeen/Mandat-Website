@@ -221,7 +221,7 @@ function Blog({ openModal }) {
                                     audience analytics and strategy.
                                 </p>
 
-                                {isSubscribed ? (
+                                {state.succeeded ? (
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
@@ -231,9 +231,10 @@ function Blog({ openModal }) {
                                         <span className="text-primary-400 font-medium">You're on the list! Thank you for subscribing.</span>
                                     </motion.div>
                                 ) : (
-                                    <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                                    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
                                         <input
                                             type="email"
+                                            name="email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             required
@@ -242,10 +243,12 @@ function Blog({ openModal }) {
                                         />
                                         <button
                                             type="submit"
+                                            disabled={state.submitting}
                                             className="btn-primary py-4 px-8 whitespace-nowrap font-display"
                                         >
-                                            Subscribe
+                                            {state.submitting ? 'Subscribing...' : 'Subscribe'}
                                         </button>
+                                        <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-400 text-xs mt-2 text-left" />
                                     </form>
                                 )}
                             </div>

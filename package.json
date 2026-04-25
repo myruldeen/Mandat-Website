@@ -10,6 +10,7 @@
     "process-blog": "node scripts/process-blog.cjs"
   },
   "dependencies": {
+    "@formspree/react": "^3.0.0",
     "framer-motion": "^12.35.0",
     "lucide-react": "^0.312.0",
     "mammoth": "^1.11.0",
