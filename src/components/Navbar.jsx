@@ -44,7 +44,7 @@ function Navbar({ openModal }) {
                         <img
                             src="/Resource/processed_logo.png"
                             alt="Mandat"
-                            className="h-40 w-auto transition-transform duration-300 group-hover:scale-105 brightness-0 invert"
+                            className="h-56 w-auto transition-transform duration-300 group-hover:scale-105 brightness-0 invert"
                         />
                     </Link>
 

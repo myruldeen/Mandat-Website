@@ -44,7 +44,7 @@ function About({ openModal }) {
     ]
 
     const milestones = [
-        { number: 50, suffix: '+', label: 'Organizations' },
+        { number: 15, suffix: '+', label: 'Organizations' },
         { number: 10, suffix: '+', label: 'Industries' },
         { number: 5, suffix: '+', label: 'Years Experience' },
     ]

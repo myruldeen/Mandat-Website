@@ -20,6 +20,7 @@ import {
     LineChart,
     UserCheck,
     Shield,
+    AlertTriangle,
 } from 'lucide-react'
 import AnimatedSection from '../components/AnimatedSection'
 import ParticleField from '../components/ParticleField'
@@ -35,50 +36,54 @@ function Services({ openModal }) {
 
     const organizationServices = [
         {
-            id: 'demographic',
-            icon: Users,
-            title: 'Demographic Profiling',
-            description: `Establish a comprehensive baseline understanding of who your audience is. We profile audiences across age, location, education, occupation, socioeconomic status, and other key demographic variables to create accurate segmentation.
+            id: 'module-01',
+            icon: Brain,
+            title: 'Psychological Profiling — OCEAN Model',
+            description: `Understand the fundamental behavior drivers of your audience using the five-trait psychological framework. By mapping Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism, we build a multi-dimensional view of how voters process information and make decisions.
 
-Our demographic profiling integrates seamlessly with psychographic and sentiment analysis, creating a foundation for deeper insights.`,
+Our data sources integrate structured psychometric surveys with public social media signals (Facebook, X, TikTok interaction patterns) to create dynamic, real-time voter profiles.`,
             useCases: [
-                'Audience segmentation for programs and campaigns',
-                'Recruitment targeting',
-                'Resource allocation planning',
-                'Baseline measurement for initiatives',
+                'Openness: Receptive to new ideas and reform messaging',
+                'Conscientiousness: Responds to structure and track-record',
+                'Extraversion: Motivated by community events and social validation',
+                'Agreeableness: Aligned with unity narratives and endorsements',
+                'Neuroticism: Driven by security, stability, and fear-of-loss framing',
             ],
+            highlight: 'Data Sources: Structured Survey & Social Media Signals',
             color: 'primary',
         },
         {
-            id: 'psychographic',
-            icon: Brain,
-            title: 'Psychographic Profiling',
-            description: `Discover WHY your audience thinks, feels, and acts the way they do. Using the OCEAN personality framework—the most scientifically validated model in psychology—we measure five key personality dimensions.
+            id: 'module-02',
+            icon: Activity,
+            title: 'Narrative Intelligence',
+            description: `Move beyond data points to active campaign decisions. Our Narrative Intelligence system tracks every emerging narrative risk—from opposition moves to viral local issues—across social media, WhatsApp, and ground reports.
 
-This isn't guesswork—psychographic profiling has been proven to increase targeting effectiveness by up to 670% compared to demographic targeting alone.`,
+Each narrative is assigned a Daily Risk Score, allowing for rapid attribution to geographic clusters and voter segments, ensuring your response is both fast and targeted.`,
             useCases: [
-                'Message and narrative alignment',
-                'Personality-informed recruitment',
-                'Communication strategy development',
-                'Program design optimization',
+                'Detection: Track emerging risks across all digital and ground channels',
+                'Scoring: Daily Narrative Risk Scores with automated high-risk alerts',
+                'Attribution: Map narratives to geographic and OCEAN segments',
+                'Response: Prescribe counter-narratives or amplification within 24 hours',
             ],
-            highlight: '670% more effective than demographic targeting alone',
-            color: 'purple',
+            highlight: 'Every score triggers a campaign decision',
+            color: 'blue',
         },
         {
-            id: 'sentiment',
-            icon: MessageSquare,
-            title: 'Sentiment Analysis',
-            description: `Measure how your audience truly responds to your messages, programs, and initiatives. Our sentiment analysis goes beyond positive/negative classification to uncover emotional intensity and topic associations.
+            id: 'module-03',
+            icon: Target,
+            title: 'Persuasion Strategy',
+            description: `Apply the science of influence directly to your audience segments. We utilize the Cialdini Framework—Reciprocity, Commitment, Social Proof, Authority, Liking, and Scarcity—to design campaign content that resonates with specific psychological profiles.
 
-We track sentiment across multiple touchpoints—surveys, social media, feedback channels—to give you a real-time pulse on audience perception.`,
+Through our continuous iteration loop, we ensure that campaign messaging remains effective by measuring engagement and revising weekly prescriptions based on scoring shifts.`,
             useCases: [
-                'Campaign effectiveness measurement',
-                'Brand perception tracking',
-                'Program satisfaction monitoring',
-                'Crisis detection and response',
+                'Voter profiles delivered → OCEAN segments mapped',
+                'Active narratives scored → Cialdini lever assigned',
+                'Campaign content prescribed per segment',
+                'Content deployed → engagement measured',
+                'Scores updated → prescriptions revised weekly',
             ],
-            color: 'pink',
+            highlight: 'Continuous Iteration Loop',
+            color: 'purple',
         },
     ]
 
@@ -198,8 +203,8 @@ Our coaching analytics go beyond win/loss records to evaluate the deeper metrics
                                         key={ind.id}
                                         onClick={() => setActiveIndustry(ind.id)}
                                         className={`relative flex items-center gap-2.5 px-8 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 font-display ${activeIndustry === ind.id
-                                                ? 'text-white'
-                                                : 'text-slate-400 hover:text-slate-200'
+                                            ? 'text-white'
+                                            : 'text-slate-400 hover:text-slate-200'
                                             }`}
                                         whileTap={{ scale: 0.97 }}
                                     >
@@ -235,6 +240,59 @@ Our coaching analytics go beyond win/loss records to evaluate the deeper metrics
                             transition={{ duration: 0.4 }}
                             className="space-y-28"
                         >
+                            {activeIndustry === 'organization' && (
+                                <div className="mb-32">
+                                    <AnimatedSection>
+                                        <div className="text-center mb-16">
+                                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 mb-8">
+                                                <AlertTriangle className="w-3 h-3 text-red-500" />
+                                                <span className="text-red-400 text-xs uppercase tracking-[0.2em] font-medium font-display">
+                                                    The Problem
+                                                </span>
+                                            </div>
+                                            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight font-display">
+                                                One-Size-Fits-All Is a Strategy That <span className="text-red-500 italic">Fails Everyone</span>
+                                            </h2>
+                                        </div>
+                                    </AnimatedSection>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                        <AnimatedSection delay={100}>
+                                            <div className="glass-panel p-8 rounded-3xl border border-white/10 bg-red-500/5 h-full">
+                                                <div className="w-12 h-12 bg-red-500/10 rounded-2xl flex items-center justify-center mb-6 border border-red-500/20">
+                                                    <AlertTriangle className="w-6 h-6 text-red-500" />
+                                                </div>
+                                                <h3 className="text-xl font-bold text-white mb-4 font-display">Wasted Reach</h3>
+                                                <p className="text-slate-400 leading-relaxed font-light">Broadcast messaging reaches voters who are already committed or unreachable. Up to 60% of campaign spend targets audiences with zero persuasion potential.</p>
+                                                <p className="text-slate-500 text-[10px] mt-6 uppercase tracking-wider opacity-60">Nickerson & Rogers (2010), APSR</p>
+                                            </div>
+                                        </AnimatedSection>
+
+                                        <AnimatedSection delay={200}>
+                                            <div className="glass-panel p-8 rounded-3xl border border-white/10 bg-amber-500/5 h-full">
+                                                <div className="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-6 border border-amber-500/20">
+                                                    <span className="text-2xl font-bold text-amber-500 font-display">$</span>
+                                                </div>
+                                                <h3 className="text-xl font-bold text-white mb-4 font-display">Cost Inefficiency</h3>
+                                                <p className="text-slate-400 leading-relaxed font-light">The average Malaysian state-level campaign spends RM 150-400K without a voter segmentation model, producing generic content that resonates with no one deeply.</p>
+                                                <p className="text-slate-500 text-[10px] mt-6 uppercase tracking-wider opacity-60">Mandat internal benchmarks, 2025</p>
+                                            </div>
+                                        </AnimatedSection>
+
+                                        <AnimatedSection delay={300}>
+                                            <div className="glass-panel p-8 rounded-3xl border border-white/10 bg-cyan-500/5 h-full">
+                                                <div className="w-12 h-12 bg-cyan-500/10 rounded-2xl flex items-center justify-center mb-6 border border-cyan-500/20">
+                                                    <RefreshCw className="w-6 h-6 text-cyan-500" />
+                                                </div>
+                                                <h3 className="text-xl font-bold text-white mb-4 font-display">Message Mismatch</h3>
+                                                <p className="text-slate-400 leading-relaxed font-light">Voters respond to different triggers — economic anxiety, identity, governance, or community belonging. A single TikTok narrative cannot serve all four simultaneously.</p>
+                                                <p className="text-slate-500 text-[10px] mt-6 uppercase tracking-wider opacity-60">Cialdini (2006); Kosinski et al. (2013), PNAS</p>
+                                            </div>
+                                        </AnimatedSection>
+                                    </div>
+                                </div>
+                            )}
+
                             {services.map((service, index) => {
                                 const colorClasses = getColorClasses(service.color)
                                 return (

@@ -5,10 +5,16 @@ const path = require('path');
 const blogsDir = path.resolve(__dirname, '../Blog');
 const outputDir = path.resolve(__dirname, '../src/data');
 const outputFile = path.join(outputDir, 'blog-posts.json');
+const publicBlogDir = path.resolve(__dirname, '../public/Resource/blog');
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
+}
+
+// Ensure public blog directory exists
+if (!fs.existsSync(publicBlogDir)) {
+    fs.mkdirSync(publicBlogDir, { recursive: true });
 }
 
 async function processDocs() {
@@ -18,19 +24,17 @@ async function processDocs() {
         process.exit(1); // Fail the build explicitly
     }
 
-    const files = fs.readdirSync(blogsDir).filter(file => file.endsWith('.docx'));
-    console.log(`Found ${files.length} .docx files.`);
+    const docxFiles = fs.readdirSync(blogsDir).filter(file => file.endsWith('.docx'));
+    const pdfFiles = fs.readdirSync(blogsDir).filter(file => file.endsWith('.pdf'));
+
+    console.log(`Found ${docxFiles.length} .docx files and ${pdfFiles.length} .pdf files.`);
     const posts = [];
 
-    if (files.length === 0) {
-        console.warn('WARNING: No .docx files found in the Blog directory.');
-    }
-
-    for (const file of files) {
+    // Process Docx
+    for (const file of docxFiles) {
         const filePath = path.join(blogsDir, file);
         const stats = fs.statSync(filePath);
 
-        // Naming structure: "TAG Title.docx"
         const nameParts = file.replace('.docx', '').split(' ');
         const tag = nameParts[0];
         const title = nameParts.slice(1).join(' ');
@@ -39,17 +43,11 @@ async function processDocs() {
         try {
             const result = await mammoth.convertToHtml({ path: filePath });
             let html = result.value;
-            const messages = result.messages;
 
-            // Extract writer from structure: Heading and under that by <writer>
-            // Mammoth usually wraps paragraphs in <p>
-            // We look for "by [Name]" or "By [Name]"
             let writer = 'Mandat Analytics';
             const writerMatch = html.match(/by\s+([^<]+)/i);
             if (writerMatch) {
                 writer = writerMatch[1].trim();
-                // Remove the "by writer" line from content if desired, or keep it.
-                // For now, let's keep it but extract it for metadata.
             }
 
             posts.push({
@@ -64,13 +62,47 @@ async function processDocs() {
                 }),
                 timestamp: stats.mtimeMs,
                 content: html,
-                excerpt: html.replace(/<[^>]*>/g, '').substring(0, 150) + '...'
+                excerpt: html.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+                isPdf: false
             });
 
-            console.log(`Processed: ${file}`);
+            console.log(`Processed Docx: ${file}`);
         } catch (error) {
             console.error(`Error processing ${file}:`, error);
         }
+    }
+
+    // Process PDF
+    for (const file of pdfFiles) {
+        const filePath = path.join(blogsDir, file);
+        const stats = fs.statSync(filePath);
+
+        const nameParts = file.replace('.pdf', '').split(' ');
+        const tag = nameParts[0];
+        const title = nameParts.slice(1).join(' ');
+        const slug = file.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
+        const publicPath = path.join(publicBlogDir, file);
+        fs.copyFileSync(filePath, publicPath);
+
+        posts.push({
+            slug,
+            tag,
+            title,
+            writer: 'Mandat Analytics',
+            date: stats.mtime.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }),
+            timestamp: stats.mtimeMs,
+            content: '', // No HTML content for PDF
+            excerpt: `PDF Report: ${title}`,
+            isPdf: true,
+            pdfUrl: `/Resource/blog/${file}`
+        });
+
+        console.log(`Processed PDF: ${file}`);
     }
 
     // Sort by date newest first

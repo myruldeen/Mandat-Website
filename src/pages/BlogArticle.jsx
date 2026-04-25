@@ -66,14 +66,24 @@ function BlogArticle({ openModal }) {
                                     </div>
                                 </div>
 
-                                <div
-                                    className="prose prose-invert prose-primary max-w-none blog-content
-                                               prose-h1:text-white prose-h2:text-white prose-h3:text-white
-                                               prose-p:text-slate-300 prose-p:leading-relaxed prose-p:text-lg
-                                               prose-strong:text-white prose-a:text-primary-400
-                                               prose-img:rounded-2xl prose-img:border prose-img:border-white/10"
-                                    dangerouslySetInnerHTML={{ __html: article.content }}
-                                />
+                                {article.isPdf ? (
+                                    <div className="w-full aspect-[1/1.4] rounded-2xl overflow-hidden border border-white/10 bg-slate-900 shadow-2xl">
+                                        <iframe
+                                            src={article.pdfUrl}
+                                            className="w-full h-full border-none"
+                                            title={article.title}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div
+                                        className="prose prose-invert prose-primary max-w-none blog-content
+                                                   prose-h1:text-white prose-h2:text-white prose-h3:text-white
+                                                   prose-p:text-slate-300 prose-p:leading-relaxed prose-p:text-lg
+                                                   prose-strong:text-white prose-a:text-primary-400
+                                                   prose-img:rounded-2xl prose-img:border prose-img:border-white/10"
+                                        dangerouslySetInnerHTML={{ __html: article.content }}
+                                    />
+                                )}
                             </article>
                         ) : (
                             <div className="flex-grow flex flex-col items-center justify-center text-center py-20">

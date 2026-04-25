@@ -32,9 +32,9 @@ function Home({ openModal }) {
     const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
     const stats = [
-        { value: 670, suffix: '%', label: 'More effective targeting' },
-        { value: 50, suffix: '+', label: 'Organizations served' },
-        { value: 94, suffix: '%', label: 'Precision match rate' },
+        { value: 60, suffix: '%', label: 'More effective targeting' },
+        { value: 15, suffix: '+', label: 'Organizations served' },
+        { value: 82, suffix: '%', label: 'Precision match rate' },
         { value: 3, suffix: 'x', label: 'Faster audience insights' },
     ]
 
@@ -234,7 +234,7 @@ function Home({ openModal }) {
                                         </div>
                                         <div>
                                             <p className="text-white text-xs font-medium font-display">Precision Match</p>
-                                            <p className="text-primary-400 text-lg font-bold font-display">94%</p>
+                                            <p className="text-primary-400 text-lg font-bold font-display">82%</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -247,7 +247,7 @@ function Home({ openModal }) {
                                 >
                                     <div className="flex items-center gap-2">
                                         <TrendingUp className="text-green-400 w-4 h-4" />
-                                        <span className="text-green-400 text-sm font-bold font-display">+670%</span>
+                                        <span className="text-green-400 text-sm font-bold font-display">+60%</span>
                                     </div>
                                 </motion.div>
 
