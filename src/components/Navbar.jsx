@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X } from 'lucide-react'
+
 import { motion, AnimatePresence } from 'framer-motion'
 
 function Navbar({ openModal }) {
@@ -44,7 +44,7 @@ function Navbar({ openModal }) {
                         <img
                             src="/Resource/processed_logo.png"
                             alt="Mandat"
-                            className="h-56 w-auto transition-transform duration-300 group-hover:scale-105 brightness-0 invert"
+                            className="h-[300px] lg:h-[400px] w-auto transition-transform duration-300 group-hover:scale-105 brightness-0 invert"
                         />
                     </Link>
 
@@ -54,7 +54,7 @@ function Navbar({ openModal }) {
                             <Link
                                 key={link.path}
                                 to={link.path}
-                                className={`relative font-medium text-sm transition-colors duration-300 font-display ${isActive(link.path)
+                                className={`relative font-medium text-lg transition-colors duration-300 font-display ${isActive(link.path)
                                     ? 'text-primary-400'
                                     : 'text-slate-300 hover:text-white'
                                     }`}
@@ -87,7 +87,7 @@ function Navbar({ openModal }) {
                         className="md:hidden p-2 text-slate-300 hover:text-white transition-colors"
                         aria-label="Toggle menu"
                     >
-                        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        {isMobileMenuOpen ? <span className="text-2xl font-light">✕</span> : <span className="text-2xl font-light">☰</span>}
                     </button>
                 </div>
             </div>

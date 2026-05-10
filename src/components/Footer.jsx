@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Linkedin, Twitter, Mail } from 'lucide-react'
+
 
 function Footer() {
     const currentYear = new Date().getFullYear()
@@ -41,7 +41,7 @@ function Footer() {
                                 className="p-3 bg-white/5 border border-white/10 rounded-full text-slate-300 hover:text-primary-400 hover:border-primary-400/50 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1"
                                 aria-label="LinkedIn"
                             >
-                                <Linkedin size={18} />
+                                <span className="font-bold text-sm tracking-widest">in</span>
                             </a>
                             <a
                                 href="https://twitter.com"
@@ -50,14 +50,14 @@ function Footer() {
                                 className="p-3 bg-white/5 border border-white/10 rounded-full text-slate-300 hover:text-primary-400 hover:border-primary-400/50 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1"
                                 aria-label="Twitter"
                             >
-                                <Twitter size={18} />
+                                <span className="font-bold text-sm tracking-widest">X</span>
                             </a>
                             <a
                                 href="mailto:info@mandatanalytic.com"
                                 className="p-3 bg-white/5 border border-white/10 rounded-full text-slate-300 hover:text-primary-400 hover:border-primary-400/50 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1"
                                 aria-label="Email"
                             >
-                                <Mail size={18} />
+                                <span className="font-bold text-sm tracking-widest">@</span>
                             </a>
                         </div>
                     </div>

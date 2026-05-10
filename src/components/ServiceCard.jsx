@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+
 import { motion } from 'framer-motion'
 
 function ServiceCard({ icon: Icon, title, description, to, delay = 0 }) {
@@ -38,7 +38,7 @@ function ServiceCard({ icon: Icon, title, description, to, delay = 0 }) {
                         className="inline-flex items-center text-primary-400 font-medium group-hover:text-primary-300 transition-colors duration-300 font-display"
                     >
                         Learn more
-                        <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-2" />
+                        <span className="ml-2 font-light text-xl transition-transform duration-300 group-hover:translate-x-2">→</span>
                     </Link>
                 )}
             </div>

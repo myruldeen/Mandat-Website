@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Send, CheckCircle } from 'lucide-react'
+
 import { useForm, ValidationError } from '@formspree/react'
 
 function BookDemoModal({ isOpen, onClose }) {
@@ -27,10 +27,10 @@ function BookDemoModal({ isOpen, onClose }) {
                 <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose} />
                 <div className="relative glass-panel rounded-2xl shadow-2xl max-w-2xl w-full p-12 text-center border border-white/10 bg-slate-900/90 animate-slide-up">
                     <button onClick={onClose} className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-full hover:bg-white/10">
-                        <X size={24} />
+                        <span className="text-xl leading-none">✕</span>
                     </button>
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-primary-500/20 rounded-full mb-6 border border-primary-500/30">
-                        <CheckCircle className="w-10 h-10 text-primary-400" />
+                        <span className="text-4xl text-primary-400 leading-none">✓</span>
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-4">Thank You!</h3>
                     <p className="text-slate-400 font-light">
@@ -57,7 +57,7 @@ function BookDemoModal({ isOpen, onClose }) {
                     className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/10"
                     aria-label="Close modal"
                 >
-                    <X size={24} />
+                    <span className="text-xl leading-none">✕</span>
                 </button>
 
                 <div className="p-8">
@@ -222,7 +222,7 @@ function BookDemoModal({ isOpen, onClose }) {
                             ) : (
                                 <>
                                     <span className="leading-none">Let's chat</span>
-                                    <Send size={18} className="translate-y-[1px]" />
+                                    <span className="translate-y-[1px] ml-2 text-xl leading-none">→</span>
                                 </>
                             )}
                         </button>
